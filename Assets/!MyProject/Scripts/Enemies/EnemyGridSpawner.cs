@@ -5,7 +5,7 @@ public sealed class EnemyGridSpawner : MonoBehaviour
 {
     public event Action AllEnemiesDied;
 
-    [SerializeField] private RectTransform _spawnArea;
+    [SerializeField] private BoxCollider2D _spawnArea;
     [SerializeField] private EnemyHealth _enemyPrefab;
     [SerializeField] private int _columns = 8;
     [SerializeField] private int _rows = 4;
@@ -14,14 +14,15 @@ public sealed class EnemyGridSpawner : MonoBehaviour
 
     public void SpawnGrid()
     {
-        Vector3 areaCenter = _spawnArea.TransformPoint(_spawnArea.rect.center);
-        float areaWidth = _spawnArea.rect.width;
-        float areaHeight = _spawnArea.rect.height;
+        Bounds bounds = _spawnArea.bounds;
+        Vector3 center = bounds.center;
+        float areaWidth = bounds.size.x;
+        float areaHeight = bounds.size.y;
 
         float stepX = _columns > 1 ? areaWidth / (_columns - 1) : 0f;
         float stepY = _rows > 1 ? areaHeight / (_rows - 1) : 0f;
 
-        Vector3 start = areaCenter - new Vector3(areaWidth * 0.5f, areaHeight * 0.5f, 0f);
+        Vector3 start = center - new Vector3(areaWidth * 0.5f, areaHeight * 0.5f, 0f);
 
         for (int row = 0; row < _rows; row++)
         {

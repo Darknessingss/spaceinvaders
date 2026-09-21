@@ -7,8 +7,8 @@ public sealed class PlayerHealth : MonoBehaviour
     public event Action Died;
 
     [SerializeField] private int _maxHealth = 300;
+    [SerializeField] private int _currentHealth;
 
-    private int _currentHealth;
     private bool _isDead;
 
     private void Awake()
