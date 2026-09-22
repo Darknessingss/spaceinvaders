@@ -11,6 +11,12 @@ public sealed class EnemyGridSpawner : MonoBehaviour
     [SerializeField] private int _rows = 4;
 
     private int _aliveCount;
+    private ScoreService _scoreService;
+
+    public void Initialize(ScoreService scoreService)
+    {
+        _scoreService = scoreService;
+    }
 
     public void SpawnGrid()
     {
@@ -31,7 +37,7 @@ public sealed class EnemyGridSpawner : MonoBehaviour
                 Vector3 position = start + new Vector3(col * stepX, row * stepY, 0f);
 
                 var enemy = Instantiate(_enemyPrefab, position, Quaternion.identity);
-
+                enemy.Initialize(_scoreService);
                 enemy.Died += OnEnemyDied;
                 enemy.GetComponent<EnemyDescent>().Initialize();
 

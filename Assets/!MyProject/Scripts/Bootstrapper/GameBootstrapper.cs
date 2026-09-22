@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +11,16 @@ public sealed class GameBootstrapper : MonoBehaviour
     [SerializeField] private EnemyGridSpawner _enemySpawner;
     [SerializeField] private KillZone _killZone;
 
+    [SerializeField] private ScoreView _scoreView;
     [SerializeField] private WinScreen _winScreen;
     [SerializeField] private LoseScreen _loseScreen;
+
+    private ScoreService _scoreService;
+
+    private void Awake()
+    {
+        _scoreService = new ScoreService();
+    }
 
     private void Start()
     {
@@ -21,6 +30,11 @@ public sealed class GameBootstrapper : MonoBehaviour
         _playerHealthView.Build(_playerHealth.GetMaxHealth());
         _playerHealthView.SetHealth(_playerHealth.GetCurrentHealth());
 
+        _scoreView.Initialize(_scoreService);
+        _winScreen.Initialize(_scoreService);
+        _loseScreen.Initialize(_scoreService);
+
+        _enemySpawner.Initialize(_scoreService);
         _enemySpawner.AllEnemiesDied += OnAllEnemiesDied;
         _enemySpawner.SpawnGrid();
 
