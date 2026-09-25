@@ -6,14 +6,26 @@ public sealed class EnemyDescent : MonoBehaviour
     [SerializeField] private float _step = 0.25f;
 
     private float _timer;
+    private GameStateMachine _stateMachine;
 
-    public void Initialize()
+    public void Initialize(GameStateMachine stateMachine)
+    {
+        _stateMachine = stateMachine;
+        _timer = _interval;
+    }
+
+    private void Awake()
     {
         _timer = _interval;
     }
 
     private void Update()
     {
+        if (_stateMachine != null && !_stateMachine.IsPlaying())
+        {
+            return;
+        }
+
         _timer -= Time.deltaTime;
 
         if (_timer > 0f)

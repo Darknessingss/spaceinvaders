@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,15 +10,20 @@ public sealed class GameBootstrapper : MonoBehaviour
     [SerializeField] private EnemyGridSpawner _enemySpawner;
     [SerializeField] private KillZone _killZone;
 
+    [SerializeField] private PlayerController _playerController;
+    [SerializeField] private PlayerShooter _playerShooter;
+
     [SerializeField] private ScoreView _scoreView;
     [SerializeField] private WinScreen _winScreen;
     [SerializeField] private LoseScreen _loseScreen;
 
     private ScoreService _scoreService;
+    private GameStateMachine _stateMachine;
 
     private void Awake()
     {
         _scoreService = new ScoreService();
+        _stateMachine = new GameStateMachine();
     }
 
     private void Start()
@@ -34,9 +38,12 @@ public sealed class GameBootstrapper : MonoBehaviour
         _winScreen.Initialize(_scoreService);
         _loseScreen.Initialize(_scoreService);
 
-        _enemySpawner.Initialize(_scoreService);
+        _enemySpawner.Initialize(_scoreService, _stateMachine);
         _enemySpawner.AllEnemiesDied += OnAllEnemiesDied;
         _enemySpawner.SpawnGrid();
+
+        _playerController.Initialize(_stateMachine);
+        _playerShooter.Initialize(_stateMachine);
 
         _winScreen.Hide();
         _loseScreen.Hide();
@@ -44,7 +51,7 @@ public sealed class GameBootstrapper : MonoBehaviour
         _winScreen.RestartRequested += RestartGame;
         _loseScreen.RestartRequested += RestartGame;
 
-        _killZone.Initialize(_playerHealth);
+        _killZone.Initialize(_playerHealth, _stateMachine);
     }
 
     private void Update()
@@ -57,11 +64,23 @@ public sealed class GameBootstrapper : MonoBehaviour
 
     private void OnPlayerDied()
     {
+        if (!_stateMachine.IsPlaying())
+        {
+            return;
+        }
+
+        _stateMachine.SetState(GameState.Lose);
         _loseScreen.Show();
     }
 
     private void OnAllEnemiesDied()
     {
+        if (!_stateMachine.IsPlaying())
+        {
+            return;
+        }
+
+        _stateMachine.SetState(GameState.Win);
         _winScreen.Show();
     }
 

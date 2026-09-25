@@ -6,9 +6,9 @@ public sealed class PlayerHealth : MonoBehaviour
     public event Action<int> HealthChanged;
     public event Action Died;
 
-    [SerializeField] private int _maxHealth = 300;
-    [SerializeField] private int _currentHealth;
+    [SerializeField] private int _maxHealth = 3;
 
+    private int _currentHealth;
     private bool _isDead;
 
     private void Awake()

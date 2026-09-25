@@ -5,12 +5,23 @@ using UnityEngine.InputSystem;
 public sealed class PlayerShooter : MonoBehaviour
 {
     [SerializeField] private GameObject _projectilePrefab;
-    [SerializeField] private float _fireCooldown = 1.25f;
+    [SerializeField] private float _fireCooldown = 1f;
 
     private float _nextFireTime;
+    private GameStateMachine _stateMachine;
+
+    public void Initialize(GameStateMachine stateMachine)
+    {
+        _stateMachine = stateMachine;
+    }
 
     private void Update()
     {
+        if (_stateMachine != null && !_stateMachine.IsPlaying())
+        {
+            return;
+        }
+
         if (Keyboard.current == null)
         {
             return;

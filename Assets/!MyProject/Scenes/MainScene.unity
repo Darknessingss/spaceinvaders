@@ -476,7 +476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthView
   _container: {fileID: 1506007594}
   _iconPrefab: {fileID: 1874868323788523686, guid: 69428f41ab5775b4f871cca892f8d35d, type: 3}
-  _healthPerIcon: 100
+  _healthPerIcon: 1
   _spacing: 1.25
 --- !u!1 &421625152
 GameObject:
@@ -649,8 +649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4e886c62996b646b3ae424cb3985d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  _maxHealth: 300
-  _currentHealth: 0
+  _maxHealth: 3
 --- !u!114 &490693830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,7 +736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShooter
   _projectilePrefab: {fileID: 4819472623002221486, guid: 48aee139274707e47a235105c28ae5c7, type: 3}
-  _fireCooldown: 1.5
+  _fireCooldown: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,6 +1592,7 @@ RectTransform:
   - {fileID: 2120289269}
   - {fileID: 879998671}
   - {fileID: 1842085082}
+  - {fileID: 1252891625}
   m_Father: {fileID: 1926807567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1738,6 +1738,8 @@ MonoBehaviour:
   _playerHealthView: {fileID: 357665272}
   _enemySpawner: {fileID: 97837832}
   _killZone: {fileID: 237244602}
+  _playerController: {fileID: 490693830}
+  _playerShooter: {fileID: 490693832}
   _scoreView: {fileID: 1046790961}
   _winScreen: {fileID: 930715101}
   _loseScreen: {fileID: 1174255716}
@@ -2008,7 +2010,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1926807567}
+  m_Father: {fileID: 930715100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2759,7 +2761,6 @@ RectTransform:
   - {fileID: 357665271}
   - {fileID: 337815558}
   - {fileID: 930715100}
-  - {fileID: 1252891625}
   - {fileID: 1174255715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -12,10 +12,13 @@ public sealed class EnemyGridSpawner : MonoBehaviour
 
     private int _aliveCount;
     private ScoreService _scoreService;
+    private GameStateMachine _stateMachine;
+    private bool _allDiedRaised;
 
-    public void Initialize(ScoreService scoreService)
+    public void Initialize(ScoreService scoreService, GameStateMachine stateMachine)
     {
         _scoreService = scoreService;
+        _stateMachine = stateMachine;
     }
 
     public void SpawnGrid()
@@ -39,7 +42,7 @@ public sealed class EnemyGridSpawner : MonoBehaviour
                 var enemy = Instantiate(_enemyPrefab, position, Quaternion.identity);
                 enemy.Initialize(_scoreService);
                 enemy.Died += OnEnemyDied;
-                enemy.GetComponent<EnemyDescent>().Initialize();
+                enemy.GetComponent<EnemyDescent>().Initialize(_stateMachine);
 
                 _aliveCount++;
             }
@@ -51,9 +54,17 @@ public sealed class EnemyGridSpawner : MonoBehaviour
         enemy.Died -= OnEnemyDied;
         _aliveCount--;
 
-        if (_aliveCount <= 0)
+        if (_aliveCount > 0 || _allDiedRaised)
         {
-            AllEnemiesDied?.Invoke();
+            return;
         }
+
+        if (_stateMachine != null && !_stateMachine.IsPlaying())
+        {
+            return;
+        }
+
+        _allDiedRaised = true;
+        AllEnemiesDied?.Invoke();
     }
 }

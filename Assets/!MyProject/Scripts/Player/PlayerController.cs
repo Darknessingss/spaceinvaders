@@ -5,8 +5,20 @@ public sealed class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 6f;
 
+    private GameStateMachine _stateMachine;
+
+    public void Initialize(GameStateMachine stateMachine)
+    {
+        _stateMachine = stateMachine;
+    }
+
     private void Update()
     {
+        if (_stateMachine != null && !_stateMachine.IsPlaying())
+        {
+            return;
+        }
+
         if (Keyboard.current == null)
         {
             return;

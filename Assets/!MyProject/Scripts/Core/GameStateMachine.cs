@@ -6,6 +6,8 @@ public sealed class GameStateMachine
 
     private GameState _current = GameState.Playing;
 
+    public GameState Current => _current;
+
     public void SetState(GameState state)
     {
         if (_current == state)

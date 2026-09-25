@@ -5,7 +5,7 @@ public sealed class PlayerHealthView : MonoBehaviour
 {
     [SerializeField] private Transform _container;
     [SerializeField] private GameObject _iconPrefab;
-    [SerializeField] private int _healthPerIcon = 100;
+    [SerializeField] private int _healthPerIcon = 1;
     [SerializeField] private float _spacing = 1.25f;
 
     private readonly List<GameObject> _icons = new();

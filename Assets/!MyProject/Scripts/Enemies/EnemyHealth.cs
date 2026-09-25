@@ -6,8 +6,7 @@ public sealed class EnemyHealth : MonoBehaviour
     public event Action<EnemyHealth> Died;
 
     [SerializeField] private int _maxHealth = 100;
-    [SerializeField] private int _scoreMin = 20;
-    [SerializeField] private int _scoreMax = 50;
+    [SerializeField] private int _scorePerKill = 30;
 
     private ScoreService _scoreService;
     private int _currentHealth;
@@ -44,7 +43,19 @@ public sealed class EnemyHealth : MonoBehaviour
         }
 
         _isDead = true;
-        _scoreService.Add(UnityEngine.Random.Range(_scoreMin, _scoreMax + 1));
+        _scoreService.Add(_scorePerKill);
+        Died?.Invoke(this);
+        Destroy(gameObject);
+    }
+
+    public void KillByZone()
+    {
+        if (_isDead)
+        {
+            return;
+        }
+
+        _isDead = true;
         Died?.Invoke(this);
         Destroy(gameObject);
     }
