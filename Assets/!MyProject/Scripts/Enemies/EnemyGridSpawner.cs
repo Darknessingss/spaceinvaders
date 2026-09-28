@@ -10,6 +10,8 @@ public sealed class EnemyGridSpawner : MonoBehaviour
     [SerializeField] private int _columns = 8;
     [SerializeField] private int _rows = 4;
 
+    [SerializeField] private EnemyFireCoordinator _fireCoordinator;
+
     private int _aliveCount;
     private ScoreService _scoreService;
     private GameStateMachine _stateMachine;
@@ -43,6 +45,13 @@ public sealed class EnemyGridSpawner : MonoBehaviour
                 enemy.Initialize(_scoreService);
                 enemy.Died += OnEnemyDied;
                 enemy.GetComponent<EnemyDescent>().Initialize(_stateMachine);
+
+                var shooter = enemy.GetComponent<EnemyShooter>();
+                if (shooter != null)
+                {
+                    shooter.Initialize(_stateMachine);
+                    _fireCoordinator.Register(shooter);
+                }
 
                 _aliveCount++;
             }
