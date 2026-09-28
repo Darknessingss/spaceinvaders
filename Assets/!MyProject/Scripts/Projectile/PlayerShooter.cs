@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerController))]
 public sealed class PlayerShooter : MonoBehaviour
 {
+
+    [SerializeField] private Transform _firepoint;
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private float _fireCooldown = 1f;
 
@@ -37,7 +39,7 @@ public sealed class PlayerShooter : MonoBehaviour
             return;
         }
 
-        Instantiate(_projectilePrefab, transform.position, Quaternion.identity);
+        Instantiate(_projectilePrefab, _firepoint.position, Quaternion.identity);
         _nextFireTime = Time.time + _fireCooldown;
     }
 }

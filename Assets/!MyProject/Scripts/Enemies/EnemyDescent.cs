@@ -5,18 +5,25 @@ public sealed class EnemyDescent : MonoBehaviour
     [SerializeField] private float _interval = 3f;
     [SerializeField] private float _step = 0.25f;
 
-    private float _timer;
+    [SerializeField] private float _sideInterval = 2f;
+    [SerializeField] private float _sideStep = 0.25f;
+
+    private float _downTimer;
+    private float _sideTimer;
+    private int _sideDirection = -1;
     private GameStateMachine _stateMachine;
 
     public void Initialize(GameStateMachine stateMachine)
     {
         _stateMachine = stateMachine;
-        _timer = _interval;
+        _downTimer = _interval;
+        _sideTimer = _sideInterval;
     }
 
     private void Awake()
     {
-        _timer = _interval;
+        _downTimer = _interval;
+        _sideTimer = _sideInterval;
     }
 
     private void Update()
@@ -26,14 +33,35 @@ public sealed class EnemyDescent : MonoBehaviour
             return;
         }
 
-        _timer -= Time.deltaTime;
+        TickDown();
+        TickSide();
+    }
 
-        if (_timer > 0f)
+    private void TickDown()
+    {
+        _downTimer -= Time.deltaTime;
+
+        if (_downTimer > 0f)
         {
             return;
         }
 
-        _timer = _interval;
+        _downTimer = _interval;
         transform.position += new Vector3(0f, -_step, 0f);
+    }
+
+    private void TickSide()
+    {
+        _sideTimer -= Time.deltaTime;
+
+        if (_sideTimer > 0f)
+        {
+            return;
+        }
+
+        _sideTimer = _sideInterval;
+
+        transform.position += new Vector3(_sideDirection * _sideStep, 0f, 0f);
+        _sideDirection = -_sideDirection;
     }
 }
